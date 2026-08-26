@@ -6,6 +6,13 @@ import { services } from '@/lib/demo-data';
 import { getPetPhoto } from '@/lib/demo-images';
 import { localizedPetValue, ui } from '@/lib/i18n';
 import { useApp } from '@/components/AppProvider';
+import type { Language } from '@/types';
+
+const serviceDescriptions:Record<Language,Record<string,string>>={
+ ru:{consult:'Консультация ветеринара',diagnostic:'Точное обследование и эффективное лечение',vaccine:'Защита здоровья вашего питомца',procedure:'Безопасность и идентификация питомца'},
+ en:{consult:'Veterinary consultation',diagnostic:'Accurate diagnostics and effective treatment',vaccine:'Preventive care and protection',procedure:'Safe pet identification'},
+ vi:{consult:'Tư vấn bác sĩ thú y',diagnostic:'Chẩn đoán chính xác và điều trị hiệu quả',vaccine:'Phòng bệnh và bảo vệ sức khỏe',procedure:'Nhận dạng thú cưng an toàn'}
+};
 
 export function BookingFlow({onDone,initialServiceId='consult'}:{onDone:()=>void;initialServiceId?:string}){
  const{state,addRequest}=useApp();
@@ -36,7 +43,7 @@ export function BookingFlow({onDone,initialServiceId='consult'}:{onDone:()=>void
   </div>
   <div className="booking-progress"><span style={{width:`${pct}%`}}/><div className="booking-step-pills">{labels.map((label,index)=><span key={label} className={step===index+1?'active':step>index+1?'done':''}>{index+1}<em>{label}</em></span>)}</div></div>
   <div className="booking-stage">
-   {step===1&&<Choice title={c.chooseService} subtitle={state.language==='ru'?'Можно изменить выбранную услугу.':state.language==='en'?'You can change the selected service.':'Bạn có thể thay đổi dịch vụ.'}>{services.map((s,index)=><button key={s.id} className={`booking-choice service-choice service-tone-${index} ${serviceId===s.id?'selected':''}`} onClick={()=>setServiceId(s.id)}><span className="choice-icon"><Icon name={s.icon}/></span><span><b>{s[state.language]}</b><small>{s.description}</small></span><span className="choice-check"><Icon name={serviceId===s.id?'check':'chevronRight'}/></span></button>)}</Choice>}
+   {step===1&&<Choice title={c.chooseService} subtitle={state.language==='ru'?'Можно изменить выбранную услугу.':state.language==='en'?'You can change the selected service.':'Bạn có thể thay đổi dịch vụ.'}>{services.map((s,index)=><button key={s.id} className={`booking-choice service-choice service-tone-${index} ${serviceId===s.id?'selected':''}`} onClick={()=>setServiceId(s.id)}><span className="choice-icon"><Icon name={s.icon}/></span><span><b>{s[state.language]}</b><small>{serviceDescriptions[state.language][s.id]}</small></span><span className="choice-check"><Icon name={serviceId===s.id?'check':'chevronRight'}/></span></button>)}</Choice>}
    {step===2&&<Choice title={c.choosePet} subtitle={state.language==='ru'?'Фото и данные питомца подтянутся в запись автоматически.':state.language==='en'?'The pet photo and profile will be attached automatically.':'Ảnh và hồ sơ thú cưng sẽ được tự động đính kèm.'}>{state.pets.map(p=><button key={p.id} className={`booking-choice pet-choice ${petId===p.id?'selected':''}`} onClick={()=>{setPetId(p.id);setContact(state.clients.find(x=>x.petIds.includes(p.id))?.contact??contact)}}><span className="choice-pet-photo"><img src={getPetPhoto(p)} alt={p.name}/></span><span><b>{p.name}</b><small>{p.breed} · {localizedPetValue(state.language,p.age)}</small></span><span className="choice-check"><Icon name={petId===p.id?'check':'chevronRight'}/></span></button>)}</Choice>}
    {step===3&&<Choice title={c.specialist} subtitle={c.specialistDemo}><button className="booking-choice selected"><span className="choice-icon"><Icon name="user"/></span><span><b>{c.anySpecialist}</b><small>PET NIKA</small></span><span className="choice-check"><Icon name="check"/></span></button></Choice>}
    {step===4&&<Choice title={c.chooseDate} subtitle={state.language==='ru'?'Выберите удобный день.':state.language==='en'?'Choose a convenient day.':'Chọn ngày phù hợp.'}><div className="booking-option-grid">{dates.map(d=><button key={d} className={`booking-option ${date===d?'selected':''}`} onClick={()=>setDate(d)}><Icon name="calendar"/><b>{d}</b></button>)}</div></Choice>}
