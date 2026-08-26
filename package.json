@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,25 +17,28 @@
     "dev:vinext": "vinext dev",
     "build:vinext": "vinext build",
     "preview": "vinext build && wrangler dev",
-    "deploy": "npx @vinext/cloudflare deploy",
+    "deploy": "vinext-cloudflare deploy",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "next": "16.1.6",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-server-dom-webpack": "19.2.6"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@vitejs/plugin-rsc": "latest",
+    "@vinext/cloudflare": "1.0.0-beta.6",
+    "@vitejs/plugin-react": "^5.1.4",
+    "@vitejs/plugin-rsc": "^0.5.34",
     "eslint": "latest",
     "eslint-config-next": "16.1.6",
     "typescript": "latest",
-    "vinext": "latest",
-    "vite": "latest",
+    "vinext": "1.0.0-beta.8",
+    "vite": "^8.0.0",
     "wrangler": "latest"
   }
 }
