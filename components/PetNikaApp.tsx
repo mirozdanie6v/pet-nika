@@ -31,7 +31,7 @@ function Inner(){
           </div>
           <div className="mobile-role-switch">
             <button className="mobile-role-trigger" aria-haspopup="menu" aria-expanded={roleMenuOpen} onClick={()=>{setRoleMenuOpen(open=>!open);setLangMenuOpen(false)}}>
-              <Icon name={role==='client'?'user':'layout'}/><span>{role==='client'?c.roleClient:c.roleAdmin}</span><span className="role-caret" aria-hidden="true">⌄</span>
+              <Icon name={role==='client'?'user':'layout'}/><span>{role==='client'?c.roleClient:c.roleAdmin}</span><Icon className="role-caret" name={roleMenuOpen?'chevronUp':'chevronDown'}/>
             </button>
             {roleMenuOpen&&<div className="mobile-role-menu" role="menu">
               <button role="menuitem" className={role==='client'?'active':''} onClick={()=>selectRole('client')}><Icon name="user"/><span><b>{c.roleClient}</b><small>{c.roleClientHint}</small></span></button>
@@ -40,7 +40,7 @@ function Inner(){
           </div>
           <div className="language-switch desktop-language-switch">{(['ru','en','vi'] as Language[]).map(l=><button key={l} className={state.language===l?'active':''} onClick={()=>selectLanguage(l)}>{l.toUpperCase()}</button>)}</div>
           <div className="mobile-language-switch">
-            <button className="mobile-language-trigger" aria-haspopup="menu" aria-expanded={langMenuOpen} onClick={()=>{setLangMenuOpen(open=>!open);setRoleMenuOpen(false)}}>{state.language.toUpperCase()}⌄</button>
+            <button className="mobile-language-trigger" aria-haspopup="menu" aria-expanded={langMenuOpen} onClick={()=>{setLangMenuOpen(open=>!open);setRoleMenuOpen(false)}}><span>{state.language.toUpperCase()}</span><Icon name={langMenuOpen?'chevronUp':'chevronDown'}/></button>
             {langMenuOpen&&<div className="mobile-language-menu" role="menu">{(['ru','en','vi'] as Language[]).map(l=><button role="menuitem" key={l} className={state.language===l?'active':''} onClick={()=>selectLanguage(l)}>{l.toUpperCase()}</button>)}</div>}
           </div>
         </div>
