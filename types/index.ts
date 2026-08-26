@@ -60,7 +60,7 @@ export interface Reminder {
 
 export interface ServiceItem {
   id: string;
-  icon: 'stethoscope' | 'syringe' | 'flask' | 'bandage';
+  icon: string;
   ru: string;
   en: string;
   vi: string;
