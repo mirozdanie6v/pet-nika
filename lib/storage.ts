@@ -1,7 +1,19 @@
 import { initialState } from '@/lib/demo-data';
-import type { AppState, Pet } from '@/types';
+import type { AppState, Language, Pet } from '@/types';
 
 const KEY = 'pet-nika-demo-state-v1';
+
+function browserLanguage(): Language {
+  if (typeof navigator === 'undefined') return initialState.language;
+  const value = navigator.language.toLowerCase();
+  if (value.startsWith('vi')) return 'vi';
+  if (value.startsWith('en')) return 'en';
+  return 'ru';
+}
+
+function freshState(): AppState {
+  return { ...structuredClone(initialState), language: browserLanguage() };
+}
 
 function withDefaultPhoto(pet: Pet): Pet {
   if (pet.photo?.trim()) return pet;
@@ -12,7 +24,7 @@ function withDefaultPhoto(pet: Pet): Pet {
 }
 
 function migrateState(parsed: Partial<AppState>): AppState {
-  const merged = { ...structuredClone(initialState), ...parsed } as AppState;
+  const merged = { ...freshState(), ...parsed } as AppState;
   merged.version = initialState.version;
   merged.pets = (Array.isArray(parsed.pets) ? parsed.pets : initialState.pets).map((pet) => withDefaultPhoto({ ...pet } as Pet));
   if (!merged.pets.some((pet) => pet.id === merged.activePetId)) merged.activePetId = merged.pets[0]?.id ?? initialState.activePetId;
@@ -23,14 +35,14 @@ export function loadState(): AppState {
   if (typeof window === 'undefined') return initialState;
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (!raw) return structuredClone(initialState);
+    if (!raw) return freshState();
     const parsed = JSON.parse(raw) as Partial<AppState>;
-    if (!Array.isArray(parsed.pets)) return structuredClone(initialState);
+    if (!Array.isArray(parsed.pets)) return freshState();
     const migrated = migrateState(parsed);
     window.localStorage.setItem(KEY, JSON.stringify(migrated));
     return migrated;
   } catch {
-    return structuredClone(initialState);
+    return freshState();
   }
 }
 
