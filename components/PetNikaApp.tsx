@@ -15,6 +15,7 @@ function Inner(){
   const [langMenuOpen,setLangMenuOpen]=useState(false);
   const {state,setLanguage}=useApp();
   const c=ui(state.language);
+  const brandTag=state.language==='ru'?'СИСТЕМА ЗАБОТЫ':state.language==='en'?'CARE SYSTEM':'HỆ THỐNG CHĂM SÓC';
   useEffect(()=>{document.documentElement.lang=state.language},[state.language]);
   const selectRole=(nextRole:AppRole)=>{setRole(nextRole);setRoleMenuOpen(false)};
   const selectLanguage=(language:Language)=>{setLanguage(language);setLangMenuOpen(false)};
@@ -22,7 +23,7 @@ function Inner(){
   return <div className="app">
     <header className="topbar">
       <div className="topbar-inner">
-        <div className="brand"><span className="brand-mark"><Icon name="paw"/></span><div><b>PET NIKA</b><small>PET CARE</small></div></div>
+        <div className="brand"><span className="brand-mark"><Icon name="paw"/></span><div><b>PET NIKA</b><small>{brandTag}</small></div></div>
         <div className="top-actions">
           <div className="role-switch desktop-role-switch" aria-label="App role">
             <button className={role==='client'?'active':''} onClick={()=>selectRole('client')}><Icon name="user"/><span>{c.roleClient}</span></button>
