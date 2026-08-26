@@ -7,10 +7,10 @@ import { getPetPhoto } from '@/lib/demo-images';
 import { localizedPetValue, ui } from '@/lib/i18n';
 import { useApp } from '@/components/AppProvider';
 
-export function BookingFlow({onDone}:{onDone:()=>void}){
+export function BookingFlow({onDone,initialServiceId='consult'}:{onDone:()=>void;initialServiceId?:string}){
  const{state,addRequest}=useApp();
  const c=ui(state.language);
- const[step,setStep]=useState(1),[serviceId,setServiceId]=useState('consult'),[petId,setPetId]=useState(state.activePetId),[date,setDate]=useState('27 Aug'),[time,setTime]=useState('11:30');
+ const[step,setStep]=useState(1),[serviceId,setServiceId]=useState(initialServiceId),[petId,setPetId]=useState(state.activePetId),[date,setDate]=useState('27 Aug'),[time,setTime]=useState('11:30');
  const pet=state.pets.find(p=>p.id===petId)??state.pets[0],service=services.find(s=>s.id===serviceId)??services[0];
  const dates=['27 Aug','28 Aug','29 Aug','1 Sep','2 Sep','3 Sep'],times=['10:30','11:30','13:00','14:30','15:30','16:00'];
  const pct=useMemo(()=>Math.min(step,7)/7*100,[step]);
