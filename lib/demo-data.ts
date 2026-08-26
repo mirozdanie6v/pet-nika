@@ -8,17 +8,17 @@ export const services: ServiceItem[] = [
 ];
 
 export const initialState: AppState = {
-  version: 1,
+  version: 2,
   language: 'ru',
   activePetId: 'lucky',
   pets: [
     {
       id: 'lucky', petId: '#N1048', owner: 'Ольга', name: 'Лаки', species: 'Собака', breed: 'Корги', birthDate: '2022-05-11', age: '4 года', sex: 'Самец', weight: '12.4 kg', color: 'Рыже-белый', sterilized: false,
-      behavior: 'Спокойнее чувствует себя рядом с владельцем', allergies: 'Не указаны', healthNotes: 'Demo: без подтверждённых хронических особенностей', ownerNotes: 'Боится громких звуков', clinicNotes: 'Demo note', lastVisit: '12 Aug', nextReminder: '19 Sep',
+      behavior: 'Спокойнее чувствует себя рядом с владельцем', allergies: 'Не указаны', healthNotes: 'Demo: без подтверждённых хронических особенностей', ownerNotes: 'Боится громких звуков', clinicNotes: 'Demo note', lastVisit: '12 Aug', nextReminder: '19 Sep', photo: '/pets/lucky.svg',
     },
     {
       id: 'mia', petId: '#N1182', owner: 'Ольга', name: 'Мия', species: 'Кошка', breed: 'Британская', birthDate: '2024-02-03', age: '2 года', sex: 'Самка', weight: '4.8 kg', color: 'Серый', sterilized: true,
-      behavior: 'Переноску переносит спокойно', allergies: 'Demo: без особенностей', healthNotes: 'Demo: без подтверждённых хронических особенностей', ownerNotes: 'Домашняя кошка', clinicNotes: 'Demo note', lastVisit: '21 Jul', nextReminder: '03 Oct',
+      behavior: 'Переноску переносит спокойно', allergies: 'Demo: без особенностей', healthNotes: 'Demo: без подтверждённых хронических особенностей', ownerNotes: 'Домашняя кошка', clinicNotes: 'Demo note', lastVisit: '21 Jul', nextReminder: '03 Oct', photo: '/pets/mia.svg',
     },
   ],
   clients: [
