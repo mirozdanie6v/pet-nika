@@ -16,9 +16,8 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+
       - name: Typecheck
-        id: typecheck
-        continue-on-error: true
         shell: bash
         run: |
           set +e
@@ -27,22 +26,70 @@ jobs:
           cat typecheck.log
           echo "$code" > typecheck.exit
           exit 0
-      - name: Upload typecheck diagnostics
+
+      - name: Lint
+        shell: bash
+        run: |
+          set +e
+          npm run lint > lint.log 2>&1
+          code=$?
+          cat lint.log
+          echo "$code" > lint.exit
+          exit 0
+
+      - name: Next.js production build
+        shell: bash
+        run: |
+          set +e
+          npm run build > next-build.log 2>&1
+          code=$?
+          cat next-build.log
+          echo "$code" > next-build.exit
+          exit 0
+
+      - name: vinext compatibility check
+        shell: bash
+        run: |
+          set +e
+          npm run check:vinext > vinext-check.log 2>&1
+          code=$?
+          cat vinext-check.log
+          echo "$code" > vinext-check.exit
+          exit 0
+
+      - name: vinext production build
+        shell: bash
+        run: |
+          set +e
+          npm run build:vinext > vinext-build.log 2>&1
+          code=$?
+          cat vinext-build.log
+          echo "$code" > vinext-build.exit
+          exit 0
+
+      - name: Upload CI diagnostics and lockfile
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: typecheck-diagnostics
+          name: ci-diagnostics
           path: |
             typecheck.log
             typecheck.exit
-      - name: Enforce typecheck
+            lint.log
+            lint.exit
+            next-build.log
+            next-build.exit
+            vinext-check.log
+            vinext-check.exit
+            vinext-build.log
+            vinext-build.exit
+            package-lock.json
+
+      - name: Enforce checks
         shell: bash
-        run: test "$(cat typecheck.exit)" = "0"
-      - name: Lint
-        run: npm run lint
-      - name: Next.js production build
-        run: npm run build
-      - name: vinext compatibility check
-        run: npm run check:vinext
-      - name: vinext production build
-        run: npm run build:vinext
+        run: |
+          test "$(cat typecheck.exit)" = "0"
+          test "$(cat lint.exit)" = "0"
+          test "$(cat next-build.exit)" = "0"
+          test "$(cat vinext-check.exit)" = "0"
+          test "$(cat vinext-build.exit)" = "0"
