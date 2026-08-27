@@ -1,2 +1,5 @@
-import { PetNikaApp } from '@/components/PetNikaApp';
-export default function Page(){return <PetNikaApp/>}
+import { redirect } from 'next/navigation';
+
+export default function Page(){
+  redirect('/prototype/index.html');
+}
