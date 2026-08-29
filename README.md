@@ -2,6 +2,24 @@
 
 Production-oriented migration of the approved PET NIKA HTML prototype to **Next.js + TypeScript + React App Router**, prepared for **Cloudflare Workers via vinext**.
 
+## UX/UI source of truth
+
+The approved standalone HTML prototype is the canonical UX/UI reference for PET NIKA.
+
+Publish it at:
+
+`uxui-source/pet-nika-uxui-source.html`
+
+Then generate the production static HTML with:
+
+```bash
+npm run uxui:sync
+```
+
+This command copies the canonical source directly to `public/index.html` and verifies that both files are byte-identical. The sync step must not redesign, minify, optimize, externalize images, replace assets, or otherwise change the approved UX/UI. See `uxui-source/README.md` for the rule set.
+
+Until the canonical source file is committed, `uxui:sync` is intentionally not part of `build` or CI, so repository preparation does not break the existing application.
+
 ## What is included
 
 - Client Mini App: Home, Services, Booking, Pet, Profile
