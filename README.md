@@ -6,19 +6,19 @@ Production-oriented migration of the approved PET NIKA HTML prototype to **Next.
 
 The approved standalone HTML prototype is the canonical UX/UI reference for PET NIKA.
 
-Publish it at:
+Canonical source:
 
 `uxui-source/pet-nika-uxui-source.html`
 
-Then generate the production static HTML with:
+Generate the production static HTML with:
 
 ```bash
 npm run uxui:sync
 ```
 
-This command copies the canonical source directly to `public/index.html` and verifies that both files are byte-identical. The sync step must not redesign, minify, optimize, externalize images, replace assets, or otherwise change the approved UX/UI. See `uxui-source/README.md` for the rule set.
+This command copies the canonical source directly to `public/index.html` and verifies that both files are byte-identical. The sync step must preserve the approved UX/UI exactly: no redesign, minification, optimization, image externalization, asset replacement, or other visual/content transformation. See `uxui-source/README.md` for the rule set.
 
-Until the canonical source file is committed, `uxui:sync` is intentionally not part of `build` or CI, so repository preparation does not break the existing application.
+The canonical source is committed to the repository. CI verifies that `uxui-source/pet-nika-uxui-source.html` and `public/index.html` remain byte-identical, so every approved UX/UI change should be followed by `npm run uxui:sync` before commit.
 
 ## What is included
 
@@ -48,7 +48,11 @@ npm run lint
 npm run build
 npm run check:vinext
 npm run build:vinext
+npm run uxui:sync
+git diff --exit-code -- uxui-source/pet-nika-uxui-source.html public/index.html
 ```
+
+CI additionally performs a byte-for-byte comparison of the canonical UX/UI source and `public/index.html`.
 
 ## Cloudflare Workers
 
