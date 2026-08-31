@@ -20,6 +20,15 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Normalize PET NIKA v28 metadata
+        shell: bash
+        run: |
+          sed -i 's|<title>PET NIKA — Full HTML Preview v2</title>|<title>PET NIKA — Full HTML Preview v28</title>|g' uxui-source/pet-nika-uxui-source.html public/index.html
+
+      - name: Verify approved UX/UI sync
+        shell: bash
+        run: cmp --silent uxui-source/pet-nika-uxui-source.html public/index.html
+
       - name: Typecheck
         shell: bash
         run: |
@@ -96,6 +105,18 @@ jobs:
           test "$(cat next-build.exit)" = "0"
           test "$(cat vinext-check.exit)" = "0"
           test "$(cat vinext-build.exit)" = "0"
+
+      - name: Commit normalized PET NIKA v28 metadata
+        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain -- uxui-source/pet-nika-uxui-source.html public/index.html)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add uxui-source/pet-nika-uxui-source.html public/index.html
+            git commit -m "chore: normalize PET NIKA v28 metadata"
+            git push
+          fi
 
       - name: Commit generated lockfile
         if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
