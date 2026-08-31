@@ -101,22 +101,6 @@ jobs:
           test "$(cat vinext-check.exit)" = "0"
           test "$(cat vinext-build.exit)" = "0"
 
-      - name: Remove obsolete branches
-        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
-        shell: bash
-        run: |
-          for branch in \
-            deploy-approved-v28 \
-            deploy-v28-exact \
-            deploy-v28-production \
-            feature/approved-home-pet-redesign \
-            feature/approved-home-pet-redesign-v2 \
-            import-v28-source \
-            prepare-uxui-source
-          do
-            git push origin --delete "$branch" || true
-          done
-
       - name: Commit generated lockfile
         if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
         shell: bash
