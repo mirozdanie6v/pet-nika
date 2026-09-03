@@ -6,7 +6,8 @@ import { Icon } from '@/components/Icon';
 import { PetEditor } from '@/components/PetEditor';
 import { useApp } from '@/components/AppProvider';
 import { demoImages, getPetPhoto, servicePhotos } from '@/lib/demo-images';
-import { localizedPetValue, ui } from '@/lib/i18n';
+import { ui } from '@/lib/i18n';
+import { localizedPetDisplay } from '@/lib/pet-display';
 import { services } from '@/lib/demo-data';
 import type { Language, Pet } from '@/types';
 
@@ -27,17 +28,17 @@ export function ClientApp(){
  const defaultSpecies=state.language==='ru'?'Собака':state.language==='en'?'Dog':'Chó';
  const newPet=()=>setEditor({id:`pet-${Date.now()}`,petId:`#N${Math.floor(Math.random()*9000+1000)}`,owner:'Ольга',name:'',species:defaultSpecies,breed:'',birthDate:'',age:'',sex:'',weight:'',color:'',sterilized:false,behavior:'',allergies:'',healthNotes:'',ownerNotes:'',clinicNotes:'',lastVisit:'—',nextReminder:'—'});
  const persist=(pet:Pet)=>state.pets.some(p=>p.id===pet.id)?savePet(pet):addPet(pet);
- const petValue=(value:string)=>localizedPetValue(state.language,value);
+ const petValue=(value:string)=>localizedPetDisplay(state.language,value);
 
  return <>
   <div className="role-banner"><div><span className="eyebrow">{c.clientEyebrow}</span><b>{c.clientHint}</b></div></div>
   <div className="client-shell">
    {screen==='home'&&<>
     <section className="client-hero premium-hero paw-surface">
-      <div className="hero-copy"><small>{c.hello}</small><h1>{c.howToday(active.name)}</h1><p>{c.heroText}</p></div>
+      <div className="hero-copy"><small>{c.hello}</small><h1>{c.howToday(petValue(active.name))}</h1><p>{c.heroText}</p></div>
       <button className="pet-chip photo-chip" onClick={()=>setScreen('pet')}>
-        <img src={getPetPhoto(active)} alt={active.name}/>
-        <span><b>{active.name}</b><small>{active.breed} · {petValue(active.age)}</small></span>
+        <img src={getPetPhoto(active)} alt={petValue(active.name)}/>
+        <span><b>{petValue(active.name)}</b><small>{petValue(active.breed)} · {petValue(active.age)}</small></span>
       </button>
       <div className="hero-floating"><span className="floating-pill lavender-pill">27 {c.august} · 11:30</span><span className="floating-pill peach-pill">{c.in24}</span></div>
       <div className="hero-actions">
@@ -50,7 +51,7 @@ export function ClientApp(){
     <SectionTitle title={c.upcoming}/>
     <div className="card appointment-card gradient-peach paw-card">
       <div className="date-box"><b>27</b><small>{c.august}</small></div>
-      <div><b>{c.routine} · {active.name}</b><p>11:30 · PET NIKA VET CLINIC</p></div>
+      <div><b>{c.routine} · {petValue(active.name)}</b><p>11:30 · PET NIKA VET CLINIC</p></div>
       <span className="status confirmed">{c.confirmed}</span>
     </div>
 
@@ -83,15 +84,15 @@ export function ClientApp(){
      <PageHead title={c.petTitle} subtitle={c.petSubtitle}/>
      <div className="pet-switcher">
        {state.pets.map(p=><button key={p.id} className={`pet-tab ${p.id===active.id?'active':''}`} onClick={()=>setActivePet(p.id)}>
-         <span className="pet-tab-photo"><img src={getPetPhoto(p)} alt={p.name}/></span>
-         <span><b>{p.name}</b><small>{p.breed}</small></span>
+         <span className="pet-tab-photo"><img src={getPetPhoto(p)} alt={petValue(p.name)}/></span>
+         <span><b>{petValue(p.name)}</b><small>{petValue(p.breed)}</small></span>
        </button>)}
        <button className="pet-tab add" onClick={newPet}><Icon name="plus"/>{c.addPet}</button>
      </div>
      <div className="pet-profile premium-pet-profile paw-surface">
        <div className="pet-profile-head">
-         <div className="pet-avatar pet-avatar-large"><img src={getPetPhoto(active)} alt={active.name}/></div>
-         <div><span className="pet-kicker">{c.favourite}</span><h2>{active.name}</h2><p>{petValue(active.species)} · {active.breed} · {petValue(active.age)}</p></div>
+         <div className="pet-avatar pet-avatar-large"><img src={getPetPhoto(active)} alt={petValue(active.name)}/></div>
+         <div><span className="pet-kicker">{c.favourite}</span><h2>{petValue(active.name)}</h2><p>{petValue(active.species)} · {petValue(active.breed)} · {petValue(active.age)}</p></div>
          <button className="btn ghost" onClick={()=>setEditor(active)}><Icon name="edit"/>{c.edit}</button>
        </div>
        <div className="pet-stats"><Stat label={c.weight} value={active.weight}/><Stat label={c.sex} value={petValue(active.sex)}/><Stat label="PET ID" value={active.petId}/><Stat label={c.reminder} value={active.nextReminder}/></div>
@@ -102,8 +103,8 @@ export function ClientApp(){
    {screen==='profile'&&<>
      <PageHead title={c.profile} subtitle={c.profileSubtitle}/>
      <button className="profile-pet-banner paw-card" onClick={()=>setScreen('pet')}>
-       <img src={getPetPhoto(active)} alt={active.name}/>
-       <span><small>{c.yourPet}</small><b>{active.name}</b><em>{active.breed} · {petValue(active.age)}</em></span><span>›</span>
+       <img src={getPetPhoto(active)} alt={petValue(active.name)}/>
+       <span><small>{c.yourPet}</small><b>{petValue(active.name)}</b><em>{petValue(active.breed)} · {petValue(active.age)}</em></span><span>›</span>
      </button>
      <div className="profile-list"><ActionRow icon="paw" title={c.myPets} text={`${state.pets.length}`} onClick={()=>setScreen('pet')}/><ActionRow icon="calendar" title={c.myAppointments} text={c.activeDemo}/><ActionRow icon="bell" title={c.reminders} text={c.repeatVisits}/><ActionRow icon="message" title={c.contactClinic} text={c.channelPending}/></div>
    </>}
