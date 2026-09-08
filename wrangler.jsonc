@@ -5,7 +5,7 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "vinext/server/app-router-entry",
   "routes": [
-    { "pattern": "pet-nika.viiversion.com", "custom_domain": true }
+    { "pattern": "pet-nika.viiversion.com", "zone_name": "viiversion.com", "custom_domain": true }
   ],
   "assets": {
     "directory": "./dist/client",
