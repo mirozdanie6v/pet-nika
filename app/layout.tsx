@@ -28,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <Script src="https://dashboard.viiversion.com/tracker.js" strategy="afterInteractive" data-project="PET NIKA" />
         <TelegramWebAppBootstrap />
         {children}
       </body>
