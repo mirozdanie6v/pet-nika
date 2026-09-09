@@ -23,12 +23,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru">
       <head>
         <Script
+          id="telegram-webapp-sdk"
           src="https://telegram.org/js/telegram-web-app.js?63"
           strategy="beforeInteractive"
         />
       </head>
       <body>
-        <Script src="https://dashboard.viiversion.com/tracker.js" strategy="afterInteractive" data-project="PET NIKA" />
+        <Script
+          id="viiversion-analytics"
+          src="https://dashboard.viiversion.com/tracker.js"
+          strategy="afterInteractive"
+          data-project="PET NIKA"
+          data-endpoint="https://dashboard.viiversion.com/api/collect"
+        />
         <TelegramWebAppBootstrap />
         {children}
       </body>
