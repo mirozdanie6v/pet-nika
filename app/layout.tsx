@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import Script from 'next/script';
 import { TelegramWebAppBootstrap } from '@/components/TelegramWebAppBootstrap';
 import './globals.css';
 import './mobile-role.css';
@@ -22,17 +21,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru">
       <head>
-        <Script
-          id="telegram-webapp-sdk"
-          src="https://telegram.org/js/telegram-web-app.js?63"
-          strategy="beforeInteractive"
-        />
+        <script src="https://telegram.org/js/telegram-web-app.js?63" />
       </head>
       <body>
-        <Script
-          id="viiversion-analytics"
+        <script
+          defer
           src="https://dashboard.viiversion.com/tracker.js"
-          strategy="afterInteractive"
           data-project="PET NIKA"
           data-endpoint="https://dashboard.viiversion.com/api/collect"
         />
